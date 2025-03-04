@@ -1,0 +1,88 @@
+import os
+import random
+
+
+"""
+遍历唤醒词/命令词语音数据路径，列出wav文件与标签对
+需要文件名里包含关键词字符串
+"""
+def list_keywords(data_dirs, out_dir, filename, words_dict):
+    """
+    遍历多个数据目录，生成包含 wav 文件路径和对应标签的文件。
+    """
+    os.makedirs(out_dir, exist_ok=True)
+    # 创建输出文件路径
+    out_file = os.path.join(out_dir, filename)
+    with open(out_file, 'w') as fw:
+        for data_dir in data_dirs:
+            # 遍历当前目录及其子目录
+            for root, dirs, files in os.walk(data_dir):
+                for file in files:
+                    if not file.endswith('.wav'):
+                        continue  # 仅处理 .wav 文件
+                    label = UNKNOWN_WORD
+                    # 查找文件名中的标签
+                    for word_,label_ in words_dict.items():
+                        if word_.lower() in file.lower():
+                            label = label_
+                            break
+                    file_path = os.path.join(root, file)
+                    fw.write(f'{file_path}\t{label}\n')
+
+# 列出唤醒词/命令词数据 和 负样本（unknown）数据
+# 用户需要根据自己的数据格式编译相应的函数
+def list_examples(out_dir, keywords_dict):
+    data_dirs = [['./datas/mini_speech_commands/yes', keywords_dict['yes']],
+                ['./datas/mini_speech_commands/no', keywords_dict['no']],
+                ['./datas/mini_speech_commands/up', keywords_dict['up']],
+                ['./datas/mini_speech_commands/down', keywords_dict['down']],
+                ['./datas/mini_speech_commands/right', keywords_dict['right']],
+                ['./datas/mini_speech_commands/left', keywords_dict['left']],
+                ["./datas/mini_speech_commands/go",  keywords_dict[UNKNOWN_WORD]],
+                ["./datas/mini_speech_commands/stop",  keywords_dict[UNKNOWN_WORD]],
+                ['./datas/mini_speech_commands_aug6/yes', keywords_dict['yes']],
+                ['./datas/mini_speech_commands_aug6/no', keywords_dict['no']],
+                ['./datas/mini_speech_commands_aug6/up', keywords_dict['up']],
+                ['./datas/mini_speech_commands_aug6/down', keywords_dict['down']],
+                ['./datas/mini_speech_commands_aug6/right', keywords_dict['right']],
+                ['./datas/mini_speech_commands_aug6/left', keywords_dict['left']],
+                ["./datas/mini_speech_commands_aug6/go",  keywords_dict[UNKNOWN_WORD]],
+                ["./datas/mini_speech_commands_aug6/stop",  keywords_dict[UNKNOWN_WORD]]
+                ]
+    # 从路径里寻找wav文件，并给出标签
+    datas = []
+    for data_dir, label in data_dirs:
+        for root, dirs, files in os.walk(data_dir):
+            for file in files:
+                if file.endswith('.wav'):
+                    file_path = os.path.join(root, file)
+                    datas.append([f"{root}/{file}", label])
+    
+    random.shuffle(datas) # 随机打乱
+    # 将wav文件路径及其标签对写入txt文件里
+    with open(f'{out_dir}/training_datas.txt', 'w') as fw:
+        for data in datas:
+            file_path,label = data
+            fw.write(f'{file_path}\t{label}\n')
+
+
+if __name__ == '__main__':
+
+    out_dir = './datas/kws_datas'
+    os.makedirs(out_dir, exist_ok=True)
+
+    UNKNOWN_WORD = '_unknown_'
+
+    # 关键词(唤醒词/命令词）和 标签 的映射关系
+    keywords_dict = {
+        UNKNOWN_WORD: 0,
+        'yes': 1, 
+        'no': 2, 
+        'up': 3, 
+        'down': 4, 
+        'left': 5, 
+        'right': 6, 
+    }
+
+    # 列出关键词及其标签对
+    list_examples(out_dir, keywords_dict)
