@@ -32,31 +32,35 @@ def list_keywords(data_dirs, out_dir, filename, words_dict):
 # 列出唤醒词/命令词数据 和 负样本（unknown）数据
 # 用户需要根据自己的数据格式编译相应的函数
 def list_examples(out_dir, keywords_dict):
-    data_dirs = [['./datas/mini_speech_commands/yes', keywords_dict['yes']],
-                ['./datas/mini_speech_commands/no', keywords_dict['no']],
-                ['./datas/mini_speech_commands/up', keywords_dict['up']],
-                ['./datas/mini_speech_commands/down', keywords_dict['down']],
-                ['./datas/mini_speech_commands/right', keywords_dict['right']],
-                ['./datas/mini_speech_commands/left', keywords_dict['left']],
-                ["./datas/mini_speech_commands/go",  keywords_dict[UNKNOWN_WORD]],
-                ["./datas/mini_speech_commands/stop",  keywords_dict[UNKNOWN_WORD]],
-                ['./datas/mini_speech_commands_aug6/yes', keywords_dict['yes']],
-                ['./datas/mini_speech_commands_aug6/no', keywords_dict['no']],
-                ['./datas/mini_speech_commands_aug6/up', keywords_dict['up']],
-                ['./datas/mini_speech_commands_aug6/down', keywords_dict['down']],
-                ['./datas/mini_speech_commands_aug6/right', keywords_dict['right']],
-                ['./datas/mini_speech_commands_aug6/left', keywords_dict['left']],
-                ["./datas/mini_speech_commands_aug6/go",  keywords_dict[UNKNOWN_WORD]],
-                ["./datas/mini_speech_commands_aug6/stop",  keywords_dict[UNKNOWN_WORD]]
-                ]
+    data_dirs = [
+        'Keyword/datas/train_data_augment/SPK001_resampled',
+        'Keyword/datas/train_data_augment/SPK002_resampled',
+        'Keyword/datas/train_data_augment/SPK003_resampled',
+        'Keyword/datas/train_data_augment/SPK004_resampled',
+    ]
+    # data_dirs = [['./datas/train_data/yes', keywords_dict['yes']],
+    #             ['./datas/train_data/no', keywords_dict['no']],
+    #             ['./datas/train_data/up', keywords_dict['up']],
+    #             ['./datas/train_data/down', keywords_dict['down']],
+    #             ['./datas/train_data/right', keywords_dict['right']],
+    #             ['./datas/train_data/left', keywords_dict['left']],
+    #             ["./datas/train_data/go",  keywords_dict[UNKNOWN_WORD]],
+    #             ["./datas/train_data/stop",  keywords_dict[UNKNOWN_WORD]],
+    #             ]
     # 从路径里寻找wav文件，并给出标签
     datas = []
-    for data_dir, label in data_dirs:
+    for data_dir in data_dirs:
+    # for data_dir, label in data_dirs:
         for root, dirs, files in os.walk(data_dir):
             for file in files:
                 if file.endswith('.wav'):
-                    file_path = os.path.join(root, file)
-                    datas.append([f"{root}/{file}", label])
+                    # 例如: SPK001_AUS_Sydney_male_40_HeyMemo_-15.4dB_1.7wps_ts-17_v1.35_p2_sp1.1.wav
+                    parts = file.split('_')
+                    if len(parts) >= 6:
+                        keyword = parts[5]  # 提取关键词
+                        label = keywords_dict.get(keyword, keywords_dict[UNKNOWN_WORD])
+                        file_path = os.path.join(root, file)
+                        datas.append([f"{root}/{file}", label])
     
     random.shuffle(datas) # 随机打乱
     # 将wav文件路径及其标签对写入txt文件里
@@ -68,7 +72,7 @@ def list_examples(out_dir, keywords_dict):
 
 if __name__ == '__main__':
 
-    out_dir = './datas/kws_datas'
+    out_dir = 'Keyword/datas/kws_datas'
     os.makedirs(out_dir, exist_ok=True)
 
     UNKNOWN_WORD = '_unknown_'
@@ -76,12 +80,15 @@ if __name__ == '__main__':
     # 关键词(唤醒词/命令词）和 标签 的映射关系
     keywords_dict = {
         UNKNOWN_WORD: 0,
-        'yes': 1, 
-        'no': 2, 
-        'up': 3, 
-        'down': 4, 
-        'left': 5, 
-        'right': 6, 
+        'HeyMemo': 1, 
+        'Next': 2, 
+        'Pause': 3, 
+        'Play': 4, 
+        'StopRecording': 5, 
+        'TakeAPicture': 6, 
+        'TakeAVideo': 7,
+        'VolumeDown': 8,
+        'VolumeUp': 9,
     }
 
     # 列出关键词及其标签对

@@ -2,8 +2,8 @@
 dataset_conf:
   use_raw: False # True使用原始音频数据，False使用特征数据
   # 训练数据路径列表
-  # train_list: './datas/kws_datas/training_datas.txt'
-  train_list: './datas/kws_datas/train.npy'
+  # train_list: 'Keyword/datas/kws_datas/training_datas.txt'
+  train_list: 'datas/kws_datas/train.npy'
   # 过滤最短的音频长度
   min_duration: 0.2
   # 最长的音频长度，大于这个长度会 裁剪掉 ?
@@ -67,8 +67,8 @@ train_conf:
   # 是否使用Pytorch2.0的编译器
   use_compile: True
   # 训练的轮数
-  max_epoch: 200
-  log_interval: 100
+  max_epoch: 50
+  log_interval: 25
 
 # 使用的模型
 use_model: 'TCN2'

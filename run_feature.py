@@ -108,7 +108,7 @@ def cal_feature_C(data):
 
     padding_head = 0 if random.random() > 0.5 else 1
 
-    command = ['./mfcc_test', file_path, str(padding_head)]
+    command = ['Keyword/mfcc_test', file_path, str(padding_head)]
     result = subprocess.run(command, capture_output=True, text=True)
 
     # 获取程序的标准输出
@@ -164,8 +164,8 @@ if __name__ == '__main__':
 
     # 参数设定
     process_num = 20
-    list_file = "./datas/kws_datas/training_datas.txt"
-    out_dir = "datas/kws_datas"
+    list_file = "Keyword/datas/kws_datas/training_datas.txt"
+    out_dir = "Keyword/datas/kws_datas"
     feat_npy = f"{out_dir}/train.npy"
 
     os.makedirs(out_dir, exist_ok=True)
