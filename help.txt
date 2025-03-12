@@ -1,0 +1,6 @@
+# 在modelscope的服务器中开始训练，需要进行如下操作：
+cd Keyword
+pip install -r requirements.txt
+pip install torchinfo
+pip install visualdl
+pip install resampy
