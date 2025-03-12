@@ -15,6 +15,7 @@ def read_list(file):
     with open(file, 'r') as f:
         return [line.strip().split() for line in f]
 
+
 def get_wav_info(wav_file):
     try:
         with wave.open(wav_file, 'rb') as wav:
@@ -25,10 +26,10 @@ def get_wav_info(wav_file):
             sample_width = wav.getsampwidth()
             # 位深 = 字节数 * 8
             bit_depth = sample_width * 8
-        return sample_rate, duration, num_channels,bit_depth
+        return sample_rate, duration, num_channels, bit_depth
     except Exception as e:
         print(f"Error processing {wav_file}: {e}")
-        return None, None, None,None
+        return None, None, None, None
 
 
 def filter(datas, sample_rate=16000, min_dur=0.2, max_dur=2.5):
@@ -47,10 +48,10 @@ def filter(datas, sample_rate=16000, min_dur=0.2, max_dur=2.5):
             file = x[0]
         else:
             file = x
-        
-        sr, duration,num_channels,bit_depth = get_wav_info(file)
-        if (sr == sample_rate and num_channels == 1 and bit_depth == 16 
-                                 and min_dur <= duration <= max_dur) :
+
+        sr, duration, num_channels, bit_depth = get_wav_info(file)
+        if (sr == sample_rate and num_channels == 1 and bit_depth == 16
+                and min_dur <= duration <= max_dur):
             valid_datas.append(x)
 
     return valid_datas
@@ -58,13 +59,13 @@ def filter(datas, sample_rate=16000, min_dur=0.2, max_dur=2.5):
 
 def cal_feature(data):
     if isinstance(data, list):
-        file_path,label = data
+        file_path, label = data
     else:
         file_path = data
         label = ''
 
-    nn_input_ms = (nn_input_frames-1) * FbankArgs['frame_shift'] \
-                + FbankArgs['frame_length']
+    nn_input_ms = (nn_input_frames - 1) * FbankArgs['frame_shift'] \
+                  + FbankArgs['frame_length']
     sample_rate = FbankArgs['sample_frequency']
     nn_input_len = int(nn_input_ms * sample_rate / 1000)  # 输入的长度
 
@@ -96,7 +97,7 @@ def cal_feature(data):
     # Extract feature
     feat = extract_feature_(input_tensor, FbankArgs)
 
-    return {"data": feat, "label": label} 
+    return {"data": feat, "label": label}
 
 
 def cal_feature_C(data):
@@ -122,7 +123,7 @@ def cal_feature_C(data):
         print(file_path, feat.shape)
         return None
     else:
-        return {"data": feat, "label": label} 
+        return {"data": feat, "label": label}
 
 
 def run_process(datas, out_npy, device, process_num=1):
@@ -134,12 +135,11 @@ def run_process(datas, out_npy, device, process_num=1):
     else:
         with Pool(processes=process_num) as pool:
             results = list(tqdm(
-                pool.imap(cal_feature_C, datas), 
-                total=len(datas), 
+                pool.imap(cal_feature_C, datas),
+                total=len(datas),
                 desc="Processing cal_feature_C"))
     results = [x for x in results if x is not None]
     np.save(out_npy, results)
-
 
 
 # 计算Fbank的参数
@@ -154,9 +154,9 @@ FbankArgs = {
     'raw_energy': False,
     'remove_dc_offset': False,
     'use_power': True,  # False,
-    'window_type': 'hanning'    
+    'window_type': 'hanning'
 }
-nn_input_frames = 100 
+nn_input_frames = 100
 
 if __name__ == '__main__':
     # 定义设备
@@ -173,10 +173,9 @@ if __name__ == '__main__':
 
     datas = read_list(list_file)
     datas = filter(datas)
-    
+
     run_process(datas, feat_npy, device, process_num)
     datas = np.load(feat_npy, allow_pickle=True).tolist()
     for data in datas:
         if data['data'].shape != (nn_input_frames, FbankArgs['num_mel_bins']):
             print(data['data'].shape)
-

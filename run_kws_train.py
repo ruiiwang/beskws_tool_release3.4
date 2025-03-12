@@ -6,8 +6,9 @@ import yaml
 import torch
 
 from src.kws_trainer import KWSTrainer
-from src.utils.utils import dict_to_object,print_dicts
+from src.utils.utils import dict_to_object, print_dicts
 from src.utils.logger import get_logger
+
 
 def get_args():
     parser = argparse.ArgumentParser(description='training your network')
@@ -44,10 +45,10 @@ if __name__ == '__main__':
     logger = get_logger(__name__, log_file)
 
     local_rank = 0
-    if args.gpus != '-1':   
-        assert (torch.cuda.is_available()) # 检查是否支持CUDA
-    
-        nranks = torch.cuda.device_count() # 获取有多少张显卡训练
+    if args.gpus != '-1':
+        assert (torch.cuda.is_available())  # 检查是否支持CUDA
+
+        nranks = torch.cuda.device_count()  # 获取有多少张显卡训练
         local_rank = int(os.environ['LOCAL_RANK'])
         world_size = int(os.environ['WORLD_SIZE'])
         gpu_id = args.gpus.split(',')[local_rank]
@@ -62,7 +63,6 @@ if __name__ == '__main__':
         gpu_id = args.gpus
         is_distributed = False
 
-
     # 只在 rank0 上打印log
     if local_rank == 0:
         # Print arguments into logs
@@ -71,14 +71,9 @@ if __name__ == '__main__':
         # Print config parameters into logs
         logger.info(f"----------{args.config}----------")
         print_dicts(configs, ' ')
-    
+
     # 获取训练器
     trainer = KWSTrainer(configs, gpu_id, log_file, is_distributed)
 
     # 训练
     trainer.train(args.model_dir, args.checkpoint, args.pretrained)
-
-
-
-
-

@@ -1,6 +1,6 @@
 import os
 import logging
-from src.utils.utils import  dict_to_object
+from src.utils.utils import dict_to_object
 from src.data_process.data_augment import data_aug
 
 # 数据增强参数
@@ -10,7 +10,7 @@ train_aug_conf = {
     # 重采样增强
     'use_resample': False,
     # 各数据增强的概率：time_shift, volume, pitch, tempo, speed, noise and reverberation ,
-    'aug_prob': [1.0,0.6,0.9,0.0,0.9,0.9,0.3],
+    'aug_prob': [1.0, 0.6, 0.9, 0.0, 0.9, 0.9, 0.3],
     # 时移范围
     'shift_ms': [-100, 100],
     # 音量变化范围
@@ -36,9 +36,9 @@ train_aug_conf = {
 }
 
 if __name__ == '__main__':
-    #超参数设置
-    process_num = 20 # 启用多线程数
-    sample_rate = 16000 # wav音频数据的采样率
+    # 超参数设置
+    process_num = 20  # 启用多线程数
+    sample_rate = 16000  # wav音频数据的采样率
 
     # 数据路径和增强配置参数设置
     data_dir = "Keyword/datas/train_data_resampled"
@@ -49,13 +49,13 @@ if __name__ == '__main__':
     os.makedirs(out_dir, exist_ok=True)
 
     # 设置日志级别、输出格式和输出内容等
-    logging.basicConfig(level = logging.INFO,
-                    format = "[%(asctime)s %(filename)s:%(lineno)d %(levelname)s] %(message)s",
-                    datefmt = "%Y-%m-%d %H:%M:%S")
+    logging.basicConfig(level=logging.INFO,
+                        format="[%(asctime)s %(filename)s:%(lineno)d %(levelname)s] %(message)s",
+                        datefmt="%Y-%m-%d %H:%M:%S")
 
     aug_conf = dict_to_object(aug_conf)
-    data_aug(data_dir=data_dir, 
-            out_dir=out_dir, 
-            sample_rate=sample_rate, 
-            process_num=process_num, 
-            aug_conf=aug_conf)
+    data_aug(data_dir=data_dir,
+             out_dir=out_dir,
+             sample_rate=sample_rate,
+             process_num=process_num,
+             aug_conf=aug_conf)
