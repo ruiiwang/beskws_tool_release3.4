@@ -35,8 +35,8 @@ def list_keywords(data_dirs, out_dir, filename, words_dict):
 # 用户需要根据自己的数据格式编译相应的函数
 def list_examples(out_dir, keywords_dict):
     data_dirs = [
-        f'Keyword/datas/train_data_augment/SPK{str(i).zfill(3)}_resampled'
-        for i in range(1, 140)
+        f'datas/train_data_resampled/SPK{str(i).zfill(3)}_resampled'
+        for i in range(1, 154)
     ]
     # data_dirs = [['./datas/train_data/yes', keywords_dict['yes']],
     #             ['./datas/train_data/no', keywords_dict['no']],
@@ -71,7 +71,7 @@ def list_examples(out_dir, keywords_dict):
 
 
 if __name__ == '__main__':
-    out_dir = 'Keyword/datas/kws_datas'
+    out_dir = 'datas/kws_datas'
     os.makedirs(out_dir, exist_ok=True)
 
     UNKNOWN_WORD = '_unknown_'

@@ -1,5 +1,5 @@
 # 在modelscope的服务器中开始训练，需要进行如下操作：
-cd Keyword
+cd beskws_tool_release3.4
 pip install -r requirements.txt
 pip install torchinfo
 pip install visualdl

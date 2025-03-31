@@ -139,7 +139,8 @@ python run_feature.py
 
 #### 训练执行
 ```shell
-torchrun --standalone --nnodes=1 --nproc_per_node=4 run_kws_train.py --gpus='4,5,6,7'
+# torchrun --standalone --nnodes=1 --nproc_per_node=4 run_kws_train.py --gpus='4,5,6,7'
+torchrun --standalone --nnodes=1 --nproc_per_node=1 run_kws_train.py --gpus='0'
 ```
 模型训练默认支持单机器上的多`GPU`训练。可以根据需要去配置使用的`GPU`。可以参考`kws_train.sh`。
 ```shell

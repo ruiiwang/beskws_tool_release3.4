@@ -24,9 +24,9 @@ train_aug_conf = {
     # 加噪信噪比范围
     'snrs': [-12, 18],
     # 噪声增强的噪声文件夹
-    'noise_dir': 'Keyword/datas/noise',
+    'noise_dir': 'datas/noise',
     # 混响增强的混响文件夹
-    'rir_dir': 'Keyword/datas/rirs_noises',
+    'rir_dir': 'datas/rirs_noises',
     # 噪声数据按类型选择的概率/比例, 需要和为1.0
     'noise_percentage': {
         'cafe': 0.5,
@@ -41,8 +41,8 @@ if __name__ == '__main__':
     sample_rate = 16000  # wav音频数据的采样率
 
     # 数据路径和增强配置参数设置
-    data_dir = "Keyword/datas/train_data_resampled"
-    out_dir = "Keyword/datas/train_data_augment"
+    data_dir = "datas/train_data_resampled"
+    out_dir = "datas/train_data_augment"
     aug_conf = train_aug_conf
 
     # 创建输出文件夹
