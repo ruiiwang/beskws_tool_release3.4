@@ -10,16 +10,30 @@ SPK001_AUS_Sydney_male_40_HeyMemo_-15.4dB_1.7wps.wav
 
 ## 目录结构
 
-文件在以SPKID命名的子文件夹中：
+1. 文件在以SPKID命名的子文件夹中：
 
 ```
-根目录/train_data/
-  ├── SPK001/
+根目录/train_data_resampled/
+  ├── SPK001_resampled/
   │     ├── SPK001_AUS_Sydney_male_40_HeyMemo_-15.4dB_1.7wps.wav
   │     ├── SPK001_AUS_Sydney_male_40_HeyMemo_-10.2dB_1.5wps.wav
   │     └── ...
-  ├── SPK002/
+  ├── SPK002_resampled/
   │     ├── SPK002_CAN_LONDON_MALE_29_HeyMemo_-20.9dB_1.8wps.wav
+  │     └── ...
+  └── ...
+```
+
+2. edgetts文件:
+
+```
+/edgetts_generated/
+  ├── AUS_Sydney_Female_25_Fast/
+  │     ├── AUS_Sydney_Female_25_HeyMemo_var1.wav
+  │     ├── AUS_Sydney_Female_25_HeyMemo_var2.wav
+  │     └── ...
+  ├── AUS_Sydney_Female_25_Normal/
+  │     ├── AUS_Sydney_Female_25_HeyMemo_var1.wav
   │     └── ...
   └── ...
 ```
