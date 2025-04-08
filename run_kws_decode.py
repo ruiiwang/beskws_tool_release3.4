@@ -174,7 +174,7 @@ FbankArgs = {
 if __name__ == '__main__':
 
     # 参数设置
-    num_class = 7  # 根据实际唤醒词个数+1去设定（ +1，是还有一个_unknown_类）
+    num_class = 10  # 根据实际唤醒词个数+1去设定（ +1，是还有一个_unknown_类）
 
     # 设置日志级别、输出格式和输出内容等
     logging.basicConfig(  # filename='decode_log.txt',
@@ -193,14 +193,14 @@ if __name__ == '__main__':
     model.eval()
 
     # 测试数据
-    wav_files = ["./datas/mini_speech_commands/down/0a9f9af7_nohash_0.wav",
-                 "./datas/mini_speech_commands/go/0a9f9af7_nohash_0.wav",
-                 "./datas/mini_speech_commands/left/0b09edd3_nohash_0.wav"]
-    decode(model, wav_files, device, sample_rate)
-    slide_window_decode(model, wav_files, device, sample_rate, frame_shift)
+    # wav_files = ["./datas/mini_speech_commands/down/0a9f9af7_nohash_0.wav",
+    #              "./datas/mini_speech_commands/go/0a9f9af7_nohash_0.wav",
+    #              "./datas/mini_speech_commands/left/0b09edd3_nohash_0.wav"]
+    # decode(model, wav_files, device, sample_rate)
+    # slide_window_decode(model, wav_files, device, sample_rate, frame_shift)
 
-    data_dirs = ["/data/zhuxb/07_pytorch/KWS_ModelTraining/datas/mini_speech_commands",
-                 "/data/zhuxb/07_pytorch/KWS_ModelTraining/datas/mini_speech_commands_aug6"]
+    data_dirs = ["./datas/train_data_resampled/SPK001_resampled/",
+                 "./datas/train_data_resampled/SPK002_resampled/"]
     for data_dir in data_dirs:
         wav_files = search_wavs(data_dir)
         result = decode(model, wav_files, device, sample_rate)
