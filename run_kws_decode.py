@@ -34,9 +34,19 @@ def load_model(model_dir, num_class, device, input_size=40):
     # 创建模型实例
     model = TCN2(in_channels=input_size, num_class=num_class)
     # 加载模型状态字典
-    model_state_dict = torch.load(model_file, map_location=device)
+    state_dict = torch.load(model_file, map_location=device)
+    
+    # 处理状态字典中的键名，移除'_orig_mod.'前缀
+    new_state_dict = {}
+    for key, value in state_dict.items():
+        if key.startswith('_orig_mod.'):
+            new_key = key[len('_orig_mod.'):]  # 移除前缀
+            new_state_dict[new_key] = value
+        else:
+            new_state_dict[key] = value
+    
     # 加载模型参数
-    model.load_state_dict(model_state_dict, strict=True)
+    model.load_state_dict(new_state_dict, strict=True)
     model.to(device)
 
     logging.debug(f"Model loaded successfully from '{model_file}' on device '{device}'")
