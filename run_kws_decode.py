@@ -34,9 +34,18 @@ def load_model(model_dir, num_class, device, input_size=40):
     # 创建模型实例
     model = TCN2(in_channels=input_size, num_class=num_class)
     # 加载模型状态字典
-    model_state_dict = torch.load(model_file, map_location=device)
+    state_dict = torch.load(model_file, map_location=device)
+    # 处理状态字典中的键名，移除'_orig_mod.'前缀
+    new_state_dict = {}
+    for key, value in state_dict.items():
+        if key.startswith('_orig_mod.'):
+            new_key = key[len('_orig_mod.'):]  # 移除前缀
+            new_state_dict[new_key] = value
+        else:
+            new_state_dict[key] = value
+    
     # 加载模型参数
-    model.load_state_dict(model_state_dict, strict=True)
+    model.load_state_dict(new_state_dict, strict=True)
     model.to(device)
 
     logging.debug(f"Model loaded successfully from '{model_file}' on device '{device}'")
@@ -164,7 +173,7 @@ FbankArgs = {
 if __name__ == '__main__':
 
     # 参数设置
-    num_class = 7  # 根据实际唤醒词个数+1去设定（ +1，是还有一个_unknown_类）
+    num_class = 10  # 根据实际唤醒词个数+1去设定（ +1，是还有一个_unknown_类）
 
     # 设置日志级别、输出格式和输出内容等
     logging.basicConfig(  # filename='decode_log.txt',
@@ -183,14 +192,14 @@ if __name__ == '__main__':
     model.eval()
 
     # 测试数据
-    wav_files = ["./datas/mini_speech_commands/down/0a9f9af7_nohash_0.wav",
-                 "./datas/mini_speech_commands/go/0a9f9af7_nohash_0.wav",
-                 "./datas/mini_speech_commands/left/0b09edd3_nohash_0.wav"]
-    decode(model, wav_files, device, sample_rate)
-    slide_window_decode(model, wav_files, device, sample_rate, frame_shift)
+    # wav_files = ["./datas/mini_speech_commands/down/0a9f9af7_nohash_0.wav",
+    #              "./datas/mini_speech_commands/go/0a9f9af7_nohash_0.wav",
+    #              "./datas/mini_speech_commands/left/0b09edd3_nohash_0.wav"]
+    # decode(model, wav_files, device, sample_rate)
+    # slide_window_decode(model, wav_files, device, sample_rate, frame_shift)
 
-    data_dirs = ["/data/zhuxb/07_pytorch/KWS_ModelTraining/datas/mini_speech_commands",
-                 "/data/zhuxb/07_pytorch/KWS_ModelTraining/datas/mini_speech_commands_aug6"]
+    data_dirs = ["./datas/train_data_resampled/SPK099_resampled",
+                 "./datas/train_data_resampled/SPK100_resampled"]
     for data_dir in data_dirs:
         wav_files = search_wavs(data_dir)
         result = decode(model, wav_files, device, sample_rate)
