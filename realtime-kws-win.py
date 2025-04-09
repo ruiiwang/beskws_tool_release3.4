@@ -155,7 +155,16 @@ def load_model(config):
     logging.info(f"从 {model_path} 加载模型")
     try:
         model_state_dict = torch.load(model_path, map_location=device)
-        model.load_state_dict(model_state_dict, strict=True)
+    # 处理状态字典中的键名，移除'_orig_mod.'前缀
+        new_state_dict = {}
+        for key, value in model_state_dict.items():
+            if key.startswith('_orig_mod.'):
+                new_key = key[len('_orig_mod.'):]  # 移除前缀
+                new_state_dict[new_key] = value
+            else:
+                new_state_dict[key] = value
+                
+        model.load_state_dict(new_state_dict, strict=True)
         model.to(device)
         model.eval()  # 设置为评估模式
         logging.info(f"模型加载成功，使用设备: {device}")
@@ -358,25 +367,6 @@ def process_audio_stream(model, device, config):
             logging.info("音频流已关闭")
         except Exception as e:
             logging.error(f"关闭音频流时出错: {str(e)}")
-
-
-# ====================== 主函数 ======================
-
-# ====================== 配置部分 ======================
-class KwsConfig:
-    def __init__(self):
-        # 关键词映射表保持不变...
-
-        # 模型路径使用Windows原生路径格式
-        self.model_path = os.path.normpath(r"./models/TCN2/last_model/model.pth")
-
-        # 音频参数针对Windows优化
-        self.block_size = 2048  # 调整为Windows音频子系统的推荐值
-        self.sample_rate = 16000
-
-        # 系统参数强制使用Windows配置
-        self.device = "cpu"  # Windows禁用GPU加速
-        self.audio_device = 1  # 默认使用第一个麦克风设备
 
 
 # ====================== 主函数 ======================

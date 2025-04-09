@@ -35,7 +35,6 @@ def load_model(model_dir, num_class, device, input_size=40):
     model = TCN2(in_channels=input_size, num_class=num_class)
     # 加载模型状态字典
     state_dict = torch.load(model_file, map_location=device)
-    
     # 处理状态字典中的键名，移除'_orig_mod.'前缀
     new_state_dict = {}
     for key, value in state_dict.items():
@@ -199,8 +198,8 @@ if __name__ == '__main__':
     # decode(model, wav_files, device, sample_rate)
     # slide_window_decode(model, wav_files, device, sample_rate, frame_shift)
 
-    data_dirs = ["./datas/train_data_resampled/SPK001_resampled/",
-                 "./datas/train_data_resampled/SPK002_resampled/"]
+    data_dirs = ["./datas/train_data_resampled/SPK099_resampled",
+                 "./datas/train_data_resampled/SPK100_resampled"]
     for data_dir in data_dirs:
         wav_files = search_wavs(data_dir)
         result = decode(model, wav_files, device, sample_rate)
