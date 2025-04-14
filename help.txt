@@ -1,0 +1,8 @@
+# 在modelscope的服务器中开始训练，需要进行如下操作：
+cd beskws_tool_release3.4
+pip install -r requirements.txt
+pip install torchinfo
+pip install visualdl
+pip install resampy
+pip install sounddevice
+pip install torch-directml
