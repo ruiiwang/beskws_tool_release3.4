@@ -70,7 +70,7 @@ def model_inference(model, q_layers, input_tensor):
     """
     # 解析浮点模型
     f_layers = parse_float(model, input_dims)
-    
+
     # 依次运行模型每一层
     f_layers_out = run_float(f_layers, input_tensor)
 
@@ -103,7 +103,7 @@ def main(model_dir, wavs_dir, model_type, kws_class_num, sample_num, model_h_fil
 
     # 推理测试
     wav_files = [
-        "/data/zhuxb/20_vad/02_c_code/vad_nn_simulator/00_wavs/16_SPK016_117_开始录像_慢语速_男_46_吉林省_延边朝鲜族自治州_v5.20_snr10.wav"]
+        "./datas/edgetts_generated/AUS_Sydney_Female_25_Fast/AUS_Sydney_Female_25_HeyMemo_var1.wav"]
     dataset = calibrate_dataset(wav_files, len(wav_files))
     input_tensor = next(dataset).to(device)
     model_inference(model, q_layers, input_tensor)
@@ -128,14 +128,14 @@ if __name__ == '__main__':
 
     # 参数设置 #
     use_beco = True  # 是否使用BECO算子
-    kws_class_num = 4  # 唤醒词数 + 1
+    kws_class_num = 10  # 唤醒词数 + 1
     sample_num = 10000  # 模型量化标定样本数
 
     model_type = "kws"
     # 输出模型.h文件
     model_h_file = f'{out_dir}/nn_{model_type}_model.hpp'
 
-    model_dir = "/data/zhuxb/07_pytorch/ModelTraining_Demo_CN/models/TCN2/last_model"
-    wavs_dir = "/data/zhuxb/02_dataset/Demo_project/KWS-CN/train_data_aug15"
+    model_dir = "./models/TCN2/tts_model"
+    wavs_dir = "./datas/edgetts_generated/AUS_Sydney_Female_25_Fast"
 
     main(model_dir, wavs_dir, model_type, kws_class_num, sample_num, model_h_file, use_beco, device='cpu')
