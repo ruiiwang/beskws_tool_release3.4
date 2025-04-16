@@ -93,9 +93,9 @@ def recursive_batch_resample_wav_files(root_folder, target_sample_rate=16000):
 # 使用示例
 if __name__ == '__main__':
     # 单文件夹批量重采样
-    input_folder = 'D:/project/LooktechVoice/results/SPK004'
-    batch_resample_wav_files(input_folder, target_sample_rate=16000)
+    # input_folder = 'D:/project/LooktechVoice/results/SPK004'
+    # batch_resample_wav_files(input_folder, target_sample_rate=16000)
 
     # 递归重采样（包括所有子文件夹）
-    root_folder = 'D:/project/LooktechVoice/VoiceGeneration/edgetts_generated_new'
+    root_folder = './datas/edgetts_generated'
     recursive_batch_resample_wav_files(root_folder, target_sample_rate=16000)
