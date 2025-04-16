@@ -111,6 +111,7 @@ if __name__ == '__main__':
         'TakeAVideo': 7,
         'VolumeDown': 8,
         'VolumeUp': 9,
+        'LookAnd': 10,
     }
 
     # 列出关键词及其标签对

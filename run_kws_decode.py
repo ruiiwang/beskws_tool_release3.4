@@ -173,7 +173,7 @@ FbankArgs = {
 if __name__ == '__main__':
 
     # 参数设置
-    num_class = 10  # 根据实际唤醒词个数+1去设定（ +1，是还有一个_unknown_类）
+    num_class = 11  # 根据实际唤醒词个数+1去设定（ +1，是还有一个_unknown_类）
 
     # 设置日志级别、输出格式和输出内容等
     logging.basicConfig(  # filename='decode_log.txt',

@@ -128,7 +128,7 @@ if __name__ == '__main__':
 
     # 参数设置 #
     use_beco = True  # 是否使用BECO算子
-    kws_class_num = 10  # 唤醒词数 + 1
+    kws_class_num = 11  # 唤醒词数 + 1
     sample_num = 10000  # 模型量化标定样本数
 
     model_type = "kws"
