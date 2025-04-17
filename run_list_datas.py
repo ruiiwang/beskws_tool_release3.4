@@ -35,7 +35,7 @@ def list_keywords(data_dirs, out_dir, filename, words_dict):
 # 用户需要根据自己的数据格式编译相应的函数
 def list_examples(out_dir, keywords_dict):
     data_dirs = [
-        f'datas/train_data_resampled/SPK{str(i).zfill(3)}_resampled'
+        f'datas/human_modified_153/SPK{str(i).zfill(3)}_resampled'
         for i in range(1, 154)
     ]
     # data_dirs = [['./datas/train_data/yes', keywords_dict['yes']],
@@ -69,7 +69,7 @@ def list_examples(out_dir, keywords_dict):
             file_path, label = data
             fw.write(f'{file_path}\t{label}\n')
 
-def edgetts_examples(out_dir, keywords_dict):
+def other_examples(out_dir, keywords_dict):
     edgetts_data_dir = 'datas/edgetts_generated'
     datas = []
     for root, dirs, files in os.walk(edgetts_data_dir):
@@ -88,6 +88,29 @@ def edgetts_examples(out_dir, keywords_dict):
     # 将wav文件路径及其标签对写入txt文件里
     with open(f'{out_dir}/training_datas_edgetts.txt', 'w') as fw:
         for data in datas:
+            file_path, label = data
+            file_path = file_path.replace('\\', '/')
+            fw.write(f'{file_path}\t{label}\n')
+
+
+    orpheus_data_dir = 'datas/orpheus_generated'
+    datas2 = []
+    for root, dirs, files in os.walk(edgetts_data_dir):
+        for file in files:
+            if file.endswith('.wav'):
+                # 从文件名中提取关键词
+                # 例如: AUS_Sydney_Female_25_HeyMemo_var1.wav
+                parts = file.split('_')
+                if len(parts) >= 5:
+                    keyword = parts[4]  # 提取关键词
+                    label = keywords_dict.get(keyword, keywords_dict[UNKNOWN_WORD])
+                    file_path = os.path.join(root, file)
+                    datas2.append([file_path, label])
+
+    random.shuffle(datas2)  # 随机打乱
+    # 将wav文件路径及其标签对写入txt文件里
+    with open(f'{out_dir}/training_datas_orpheus.txt', 'w') as fw:
+        for data in datas2:
             file_path, label = data
             file_path = file_path.replace('\\', '/')
             fw.write(f'{file_path}\t{label}\n')
@@ -115,5 +138,5 @@ if __name__ == '__main__':
     }
 
     # 列出关键词及其标签对
-    # list_examples(out_dir, keywords_dict)
+    list_examples(out_dir, keywords_dict)
     edgetts_examples(out_dir, keywords_dict)
