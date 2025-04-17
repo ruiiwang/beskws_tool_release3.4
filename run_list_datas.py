@@ -95,7 +95,7 @@ def other_examples(out_dir, keywords_dict):
 
     orpheus_data_dir = 'datas/orpheus_generated'
     datas2 = []
-    for root, dirs, files in os.walk(edgetts_data_dir):
+    for root, dirs, files in os.walk(orpheus_data_dir):
         for file in files:
             if file.endswith('.wav'):
                 # 从文件名中提取关键词
@@ -111,6 +111,23 @@ def other_examples(out_dir, keywords_dict):
     # 将wav文件路径及其标签对写入txt文件里
     with open(f'{out_dir}/training_datas_orpheus.txt', 'w') as fw:
         for data in datas2:
+            file_path, label = data
+            file_path = file_path.replace('\\', '/')
+            fw.write(f'{file_path}\t{label}\n')
+    
+    unknown_data_dir = 'datas/unknown_data'
+    datas3 = []
+    for root, dirs, files in os.walk(unknown_data_dir):
+        for file in files:
+            if file.endswith('.wav'):
+                label = keywords_dict[UNKNOWN_WORD]
+                file_path = os.path.join(root, file)
+                datas3.append([file_path, label])
+
+    random.shuffle(datas3)  # 随机打乱
+    # 将wav文件路径及其标签对写入txt文件里
+    with open(f'{out_dir}/training_datas_unknown.txt', 'w') as fw:
+        for data in datas3:
             file_path, label = data
             file_path = file_path.replace('\\', '/')
             fw.write(f'{file_path}\t{label}\n')
@@ -139,4 +156,4 @@ if __name__ == '__main__':
 
     # 列出关键词及其标签对
     list_examples(out_dir, keywords_dict)
-    edgetts_examples(out_dir, keywords_dict)
+    other_examples(out_dir, keywords_dict)
