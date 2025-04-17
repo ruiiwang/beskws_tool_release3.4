@@ -66,5 +66,5 @@ def delete_invalid_wav_files(root_folder):
 # 使用示例
 if __name__ == "__main__":
     root_folder = "./datas/"  # 修改为实际的根文件夹路径
-    delete_unknown_files_and_folders(root_folder)
+    # delete_unknown_files_and_folders(root_folder)
     delete_invalid_wav_files(root_folder)
