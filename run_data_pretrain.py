@@ -64,7 +64,7 @@ def filter_dataset(input_file, output_file=None):
 
 if __name__ == "__main__":
     # 在这里直接设置输入和输出文件路径
-    input_file = "datas/kws_datas/human_edgetts.txt"  # 修改为您的输入文件路径
-    output_file = "datas/kws_datas/human_edgetts_modified.txt"  # 修改为您的输出文件路径
+    input_file = "datas/kws_datas/training_datas_origin.txt"  # 修改为您的输入文件路径
+    output_file = "datas/kws_datas/training_datas_origin.txt"  # 修改为您的输出文件路径
     
     filter_dataset(input_file, output_file)

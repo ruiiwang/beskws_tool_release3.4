@@ -6,7 +6,7 @@ from src.data_process.data_augment import data_aug
 # 数据增强参数
 train_aug_conf = {
     # 做音频增强的概率,整数， 0:不做增强
-    'aug_ratio': 10,
+    'aug_ratio': 4,
     # 重采样增强
     'use_resample': False,
     # 各数据增强的概率：time_shift, volume, pitch, tempo, speed, noise and reverberation ,
@@ -29,17 +29,17 @@ train_aug_conf = {
     'rir_dir': 'datas/rirs_noises',
     # 噪声数据按类型选择的概率/比例, 需要和为1.0
     'noise_percentage': {
-        'bathroom': 0.11,
-        'beach': 0.11,
+        'bathroom': 0.12,
+        'beach': 0.12,
         'cafe': 0.01,
         'car': 0.01,
         'fire': 0.03,
-        'kitchen': 0.11,
-        'market': 0.11,
+        'kitchen': 0.12,
+        'market': 0.12,
         'playground': 0.11,
         'rain': 0.11,
-        'transport': 0.13,
-        'voice': 0.15,
+        'transport': 0.14,
+        'voice': 0.1,
         'white': 0.01,
     },
 }
@@ -54,6 +54,7 @@ if __name__ == '__main__':
         "datas/edgetts_generated",
         "datas/human_modified_153",
         "datas/orpheus_generated",
+        "datas/unknown_data",
     ]
     out_dir = "datas/train_data_augment"
     aug_conf = train_aug_conf

@@ -27,14 +27,15 @@ def cat_files(input_files, output_file):
 if __name__ == "__main__":
     # 硬编码的文件路径列表（可以添加任意数量的输入文件）
     input_files = [
-        "datas/kws_datas/training_datas_orpheus_modified.txt",
-        "datas/kws_datas/training_datas_edgetts_modified.txt",
+        "datas/kws_datas/training_datas_orpheus.txt",
+        "datas/kws_datas/training_datas_edgetts.txt",
         "datas/kws_datas/training_datas.txt",
+        "datas/kws_datas/training_datas_unknown.txt"
         # 可以继续添加更多文件...
     ]
 
     # 输出文件路径
-    output_file = "datas/kws_datas/training_datas_modified.txt"
+    output_file = "datas/kws_datas/training_datas_origin.txt"
 
     # 调用函数合并文件
     cat_files(input_files, output_file)

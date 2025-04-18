@@ -64,7 +64,7 @@ def list_examples(out_dir, keywords_dict):
 
     random.shuffle(datas)  # 随机打乱
     # 将wav文件路径及其标签对写入txt文件里
-    with open(f'{out_dir}/training_datas.txt', 'w') as fw:
+    with open(f'{out_dir}/training_datas_human.txt', 'w') as fw:
         for data in datas:
             file_path, label = data
             fw.write(f'{file_path}\t{label}\n')
