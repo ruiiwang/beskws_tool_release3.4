@@ -135,7 +135,7 @@ if __name__ == '__main__':
     # 输出模型.h文件
     model_h_file = f'{out_dir}/nn_{model_type}_model.hpp'
 
-    model_dir = "./models/TCN2/tts_model"
+    model_dir = "./models/TCN2/final_model_2"
     wavs_dir = "./datas/edgetts_generated/AUS_Sydney_Female_25_Fast"
 
     main(model_dir, wavs_dir, model_type, kws_class_num, sample_num, model_h_file, use_beco, device='cpu')
