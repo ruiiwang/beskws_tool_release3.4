@@ -64,8 +64,20 @@ def model_inference(model, q_layers, input_tensor):
     # 浮点模型推理
     float_out = model(input_tensor)
 
-    print(f"float_out : {float_out.detach().numpy()}")
-    print(f"quant_out : {quant_out.detach().numpy()}")
+    # 获取预测类别
+    float_pred = torch.argmax(float_out, dim=1)
+    quant_pred = torch.argmax(quant_out, dim=1)
+    # 计算分类准确率
+    correct = (float_pred == quant_pred).sum().item()
+    accuracy = correct / float_pred.size(0)
+
+    # print(f"float_out : {float_out.detach().numpy()}")
+    # print(f"quant_out : {quant_out.detach().numpy()}")
+    print(f"Float prediction: {float_pred.item()}")
+    print(f"Quant prediction: {quant_pred.item()}")
+    print(f"Classification accuracy: {accuracy:.4f}")
+    
+    return accuracy  # 添加这行返回精度值
 
     """
     # 解析浮点模型
@@ -102,11 +114,29 @@ def main(model_dir, wavs_dir, model_type, kws_class_num, sample_num, model_h_fil
     write_model_h(q_layers, model_h_file, model_type, kws_class_num, use_beco=use_beco)
 
     # 推理测试
-    wav_files = [
-        "./datas/edgetts_generated/AUS_Sydney_Female_25_Fast/AUS_Sydney_Female_25_HeyMemo_var1.wav"]
-    dataset = calibrate_dataset(wav_files, len(wav_files))
-    input_tensor = next(dataset).to(device)
-    model_inference(model, q_layers, input_tensor)
+    # wav_files = [
+    #     "./datas/edgetts_generated/AUS_Sydney_Female_25_Fast/AUS_Sydney_Female_25_HeyMemo_var1.wav"]
+    # dataset = calibrate_dataset(wav_files, len(wav_files))
+    # input_tensor = next(dataset).to(device)
+    # model_inference(model, q_layers, input_tensor)
+
+    # 批量推理测试 - 修改这部分
+    test_wavs_dir = "./datas/human_modified_153"  # 测试目录
+    test_files = find_wav_files(test_wavs_dir)
+    
+    total_accuracy = 0
+    file_count = 0
+    
+    for test_file in test_files:
+        print(f"\nProcessing file: {test_file}")
+        dataset = calibrate_dataset([test_file], 1)
+        input_tensor = next(dataset).to(device)
+        accuracy = model_inference(model, q_layers, input_tensor)
+        total_accuracy += accuracy
+        file_count += 1
+    
+    if file_count > 0:
+        print(f"\nAverage accuracy across {file_count} files: {total_accuracy/file_count:.4f}")
 
 
 if __name__ == '__main__':
@@ -136,6 +166,6 @@ if __name__ == '__main__':
     model_h_file = f'{out_dir}/nn_{model_type}_model.hpp'
 
     model_dir = "./models/TCN2/final_model_2"
-    wavs_dir = "./datas/edgetts_generated/AUS_Sydney_Female_25_Fast"
+    wavs_dir = "./datas/edgetts_generated"
 
     main(model_dir, wavs_dir, model_type, kws_class_num, sample_num, model_h_file, use_beco, device='cpu')
