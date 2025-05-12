@@ -6,7 +6,7 @@ from src.data_process.data_augment import data_aug
 # 数据增强参数
 train_aug_conf = {
     # 做音频增强的概率,整数， 0:不做增强
-    'aug_ratio': 4,
+    'aug_ratio': 8,
     # 重采样增强
     'use_resample': False,
     # 各数据增强的概率：time_shift, volume, pitch, tempo, speed, noise and reverberation ,
